@@ -5,7 +5,10 @@ User::User()
 
 User::User(Resources *res): res(res)
 {
+	bulletTimer.start();
+	
 	tank = Tank(res, 0);
+	tank.setVX(4);
 	tank.setX(WINDOW_WIDTH/2);
 	tank.setY(WINDOW_HEIGHT - tank.getHeight());
 }
@@ -18,6 +21,11 @@ float User::getX()
 float User::getY()
 {
 	return tank.getY();
+}
+
+float User::getBarrelHead()
+{
+	return tank.getBarrelHead();
 }
 
 void User::update()
@@ -37,7 +45,21 @@ void User::update()
 	if (keystates[SDL_SCANCODE_RIGHT] || keystates[SDL_SCANCODE_D]){
 		move += MOVE_RIGHT;
 	}
+	if (keystates[SDL_SCANCODE_SPACE] &&  bulletTimer.getTicks() > res->timeDelta){
+		fired = true;
+		bulletTimer.start();
+		tank.fire();
+		
+	} else {
+		fired = false;
+	}
+	
 	tank.move(move);
+}
+
+bool User::isFired()
+{
+	return fired;
 }
 
 void User::draw()

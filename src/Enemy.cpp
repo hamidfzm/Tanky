@@ -8,6 +8,7 @@ Enemy::Enemy(Resources *res, const int type): res(res)
 	tank = Tank(res, type);
 	tank.setAngle(180);
 	tank.setY(0);
+	tank.setVY(3.2);
 }
 
 float Enemy::getX()

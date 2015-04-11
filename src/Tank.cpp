@@ -12,6 +12,13 @@ SDL_Rect Tank::barrel[] = {	{840, 426, 16, 50},  // black
 							{850, 58, 16, 50},  // blue
 							{834, 58, 16, 50}};  // green
 
+SDL_Rect Tank::smoke[] = {	{324, 107, 92, 89},
+							{396, 285, 90, 99}, 
+							{590, 182, 79, 79}, 
+							{128, 0, 100, 97}, 
+							{226, 194, 98, 107},
+							{418, 0, 87, 87}};
+
 Tank::Tank()
 {
 }
@@ -21,6 +28,7 @@ Tank::Tank(Resources *res, const int kind) :kind(kind), res(res)
 	x = y = angle = 0;
 	setVX(1);
 	setVY(1);
+	fireFrame = 7;
 }
 
 void Tank::setX(const float x)
@@ -79,9 +87,20 @@ float Tank::getHeight()
 	return body[kind].h;
 }
 
+float Tank::getBarrelHead()
+{
+	return y - barrel[kind].h - 5;
+}
+
 double Tank::getAngle()
 {
 	return angle;
+}
+
+void Tank::fire()
+{
+	fireFrame = 0;
+	fireFrameTimer.start();
 }
 
 void Tank::move(const int direction)
@@ -103,4 +122,12 @@ void Tank::draw()
 {
 	renderTexture(res->sprites_txt, res->renderer, x - body[kind].w/2, y - body[kind].h/2, angle, &body[kind]);
 	renderTexture(res->sprites_txt, res->renderer, x - barrel[kind].w/2, y - barrel[kind].h + 5, angle, barrel[kind].w/2, barrel[kind].h - 5, &barrel[kind]);
+	
+	if (fireFrame < 7){
+		renderTexture(res->sprites_txt, res->renderer, x - smoke[kind].w/2 , y - 2 * body[kind].h, &smoke[fireFrame]);
+		if (fireFrameTimer.getTicks() > res->timeDelta / 4){
+			fireFrame++;
+			fireFrameTimer.start();
+		}
+	}
 }

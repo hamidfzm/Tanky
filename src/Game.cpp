@@ -36,6 +36,7 @@ Game::Game()
     StateStack.push(0); // menu
 	
 	user = User(&res);
+	tile = Tile(&res);
 	
 	enemyGenerateTimer.start();
 	
@@ -50,6 +51,8 @@ Game::~Game()
 	cleanup(res.andy_fnt_min, res.andy_fnt, res.sprites_txt, res.renderer, res.screen);
 	cleanup(res.prompt_tex, res.continue_tex);
 	enemies.clear();
+	bullets.clear();
+	
     TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -206,26 +209,48 @@ void Game::Play()
 	enemyGenerate();
 	
 	HandlePlayInput();
+	tile.update();
 	user.update();
+	
+	if (user.isFired()){
+		bullets.push_back(Bullet(&res, 0, MOVE_UP, user.getX(), user.getBarrelHead()));
+	}
 	
 	for (auto enemy = begin (enemies); enemy != end (enemies);) {
 		enemy->update();
 		
-		if (enemy->getY() > WINDOW_HEIGHT - 100){
+		
+		if (enemy->getY() > WINDOW_HEIGHT + enemy->getWidth()){
 			enemy = enemies.erase(enemy);
 		} else {
 			++enemy;
+		}
+	}
+	for (auto bullet = begin (bullets); bullet != end (bullets);) {
+		bullet->update();
+		
+		if (bullet->getY() > WINDOW_HEIGHT + bullet->getWidth() || bullet->getY() < -bullet->getWidth()){
+			bullet = bullets.erase(bullet);
+		} else {
+			++bullet;
 		}
 	}
 
 	SDL_RenderClear(res.renderer);
 	
 	
-//	back.draw(renderer);
+	tile.draw();
+	
+	for (auto & bullet : bullets) {
+		bullet.draw();
+		std::cout<<bullet.getY()<<std::endl;
+	}
+	
 	user.draw();
-	for (Enemy & enemy : enemies) {
+	for (auto & enemy : enemies) {
 		enemy.draw();
 	}
+
 
 	SDL_RenderPresent(res.renderer);
 

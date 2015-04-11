@@ -16,8 +16,11 @@
 #include "Timer.h"
 #include "Resources.h"
 
+// Game
 #include "User.h"
 #include "Enemy.h"
+#include "Bullet.h"
+#include "Tile.h"
 
 class Game
 {
@@ -32,7 +35,9 @@ private:
 	
 	Resources res;
 	User user;
+	Tile tile;
 	std::vector<Enemy> enemies;
+	std::vector<Bullet> bullets;
 	
 	// Functions to handle the three states of the game 
 	void StartMenu();

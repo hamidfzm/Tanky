@@ -7,6 +7,8 @@
 
 #include "Defines.h"
 
+#include "Timer.h"
+
 #include "Tank.h"
 
 class User
@@ -16,12 +18,17 @@ public:
 	User(Resources *);
 	float getX();
 	float getY();
+	float getBarrelHead();
+	bool isFired();
 	void update();
 	void draw();
 	
 private:
+	bool fired;
+	
 	Resources *res;
 	Tank tank;
+	Timer bulletTimer;
 
 };
 

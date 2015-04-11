@@ -26,6 +26,8 @@
     <File Name="src/Tank.cpp"/>
     <File Name="src/User.cpp"/>
     <File Name="src/Enemy.cpp"/>
+    <File Name="src/Tile.cpp"/>
+    <File Name="src/Bullet.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="include/Game.h"/>
@@ -38,6 +40,8 @@
     <File Name="include/Resources.h"/>
     <File Name="include/User.h"/>
     <File Name="include/Enemy.h"/>
+    <File Name="include/Tile.h"/>
+    <File Name="include/Bullet.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

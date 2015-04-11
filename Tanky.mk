@@ -6,14 +6,14 @@
 ProjectName            :=Tanky
 ConfigurationName      :=Debug
 WorkspacePath          := "/Users/hamidfzm/Library/Application Support/codelite/SDL"
-ProjectPath            := "/Users/hamidfzm/Desktop/Tanky"
+ProjectPath            := "/Users/hamidfzm/Projects/Tanky"
 IntermediateDirectory  :=./bin
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Hamid Feizabadi
-Date                   :=2015-04-11
+Date                   :=2015-04-12
 CodeLitePath           :="/Users/hamidfzm/Library/Application Support/codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -dynamiclib -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/Applications/codelite.app/Contents/SharedSupport/
-Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_User.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_User.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Tile.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_Bullet.cpp$(ObjectSuffix) 
 
 
 
@@ -88,7 +88,7 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp $(IntermediateDirectory)/src_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_main.cpp$(DependSuffix) -MM "src/main.cpp"
 
@@ -96,7 +96,7 @@ $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) "src/main.cpp"
 
 $(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix): src/Game.cpp $(IntermediateDirectory)/src_Game.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/Game.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Game.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_Game.cpp$(DependSuffix): src/Game.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Game.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Game.cpp$(DependSuffix) -MM "src/Game.cpp"
 
@@ -104,7 +104,7 @@ $(IntermediateDirectory)/src_Game.cpp$(PreprocessSuffix): src/Game.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Game.cpp$(PreprocessSuffix) "src/Game.cpp"
 
 $(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix): src/Timer.cpp $(IntermediateDirectory)/src_Timer.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/Timer.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Timer.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_Timer.cpp$(DependSuffix): src/Timer.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Timer.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Timer.cpp$(DependSuffix) -MM "src/Timer.cpp"
 
@@ -112,7 +112,7 @@ $(IntermediateDirectory)/src_Timer.cpp$(PreprocessSuffix): src/Timer.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Timer.cpp$(PreprocessSuffix) "src/Timer.cpp"
 
 $(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix): src/Tank.cpp $(IntermediateDirectory)/src_Tank.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/Tank.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Tank.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_Tank.cpp$(DependSuffix): src/Tank.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Tank.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Tank.cpp$(DependSuffix) -MM "src/Tank.cpp"
 
@@ -120,7 +120,7 @@ $(IntermediateDirectory)/src_Tank.cpp$(PreprocessSuffix): src/Tank.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Tank.cpp$(PreprocessSuffix) "src/Tank.cpp"
 
 $(IntermediateDirectory)/src_User.cpp$(ObjectSuffix): src/User.cpp $(IntermediateDirectory)/src_User.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/User.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_User.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/User.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_User.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_User.cpp$(DependSuffix): src/User.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_User.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_User.cpp$(DependSuffix) -MM "src/User.cpp"
 
@@ -128,12 +128,28 @@ $(IntermediateDirectory)/src_User.cpp$(PreprocessSuffix): src/User.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_User.cpp$(PreprocessSuffix) "src/User.cpp"
 
 $(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix): src/Enemy.cpp $(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Desktop/Tanky/src/Enemy.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IncludePath)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Enemy.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix): src/Enemy.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Enemy.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Enemy.cpp$(DependSuffix) -MM "src/Enemy.cpp"
 
 $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix): src/Enemy.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Enemy.cpp$(PreprocessSuffix) "src/Enemy.cpp"
+
+$(IntermediateDirectory)/src_Tile.cpp$(ObjectSuffix): src/Tile.cpp $(IntermediateDirectory)/src_Tile.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Tile.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Tile.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_Tile.cpp$(DependSuffix): src/Tile.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Tile.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Tile.cpp$(DependSuffix) -MM "src/Tile.cpp"
+
+$(IntermediateDirectory)/src_Tile.cpp$(PreprocessSuffix): src/Tile.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Tile.cpp$(PreprocessSuffix) "src/Tile.cpp"
+
+$(IntermediateDirectory)/src_Bullet.cpp$(ObjectSuffix): src/Bullet.cpp $(IntermediateDirectory)/src_Bullet.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/Users/hamidfzm/Projects/Tanky/src/Bullet.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_Bullet.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_Bullet.cpp$(DependSuffix): src/Bullet.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_Bullet.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_Bullet.cpp$(DependSuffix) -MM "src/Bullet.cpp"
+
+$(IntermediateDirectory)/src_Bullet.cpp$(PreprocessSuffix): src/Bullet.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_Bullet.cpp$(PreprocessSuffix) "src/Bullet.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
