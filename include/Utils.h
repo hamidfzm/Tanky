@@ -196,4 +196,24 @@ inline int random(int a, int b)
 	return random() % b + a;
 }
 
+
+inline bool collission(SDL_Rect box1, SDL_Rect box2)
+{
+	//Calculate the sides of rect A
+	int t1 = box1.y, t2 = box2.y;
+	int b1 = t1 + box1.h, b2 = t2 + box2.h;
+	int l1 = box1.x, l2 = box2.x;
+	int r1 = l1 + box1.w, r2 = l2 + box2.w;
+	
+	std::cout<<box1.x<<std::endl;
+	
+	// Check edges
+	if ((l1 > r2) || ( r1 < l2 ) || ( t1 > b2 ) || ( b1 < t2 ))
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 #endif // UTILS_H
