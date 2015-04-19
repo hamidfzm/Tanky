@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stack>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 // Constants
 #include "Defines.h"
@@ -41,6 +43,7 @@ private:
 	
 	// Functions to handle the three states of the game 
 	void StartMenu();
+	void PauseMenu();
 	void InputNameMenu();
 	void Scoresmenu();
 
@@ -48,11 +51,13 @@ private:
 	void Exit();
 
 	void HandleStartMenuInput();
+	void HandlePauseMenuInput();
 	void HandlePlayInput();
 	void HandleExitInput();
 
 	Timer enemyGenerateTimer;
 	void enemyGenerate();
+	void Reset();
 
 };
 

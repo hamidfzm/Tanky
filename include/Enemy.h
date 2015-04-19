@@ -16,14 +16,17 @@ public:
 	Enemy(Resources * , const int );
 	float getX();
 	float getY();
+	SDL_Rect getBox();
 	float getWidth();
 	float getHeight();
 	void setX(const float);
 	void setY(const float);
 	void update();
 	void draw();
+	void Die();
 	
 private:
+	bool died;
 	Resources *res;
 	Tank tank;
 

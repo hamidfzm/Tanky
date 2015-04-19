@@ -26,6 +26,7 @@ public:
 	float getVY();
 	float getWidth();
 	float getHeight();
+	SDL_Rect getBox();
 	double getAngle();
 	
 	void setX(const float);

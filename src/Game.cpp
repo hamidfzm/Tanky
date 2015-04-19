@@ -42,18 +42,41 @@ Game::Game()
 	
 	res.prompt_tex = renderText("Please input your name:", res.andy_fnt_min, res.white_clr, res.renderer);
 	res.continue_tex = renderText("Press (Enter) to continue...", res.andy_fnt_min, res.white_clr, res.renderer);
+	res.start_tex = renderText("Start (G)ame", res.andy_fnt, res.white_clr, res.renderer);
+	res.quit_tex = renderText("(Q)uit Game", res.andy_fnt, res.white_clr, res.renderer);
+	res.resume_tex = renderText("(R)esume Game", res.andy_fnt, res.white_clr, res.renderer);
+	res.mainmenu_tex = renderText("(M)ain Menu", res.andy_fnt, res.white_clr, res.renderer);
+	
+	// load user stats
+	ifstream scores ("scores.txt");
+	if (scores){
+		int players_count;
+		string player_name;
+		int player_score;
+		scores>>players_count;
+		
+		for(int i=0; i< players_count; i++){
+			
+		}
+	}
+}
 
+void Game::Reset()
+{
+	user.reset();
+	enemies.clear();
+	bullets.clear();
 }
 
 Game::~Game()
 {
 	// Clean up
 	cleanup(res.andy_fnt_min, res.andy_fnt, res.sprites_txt, res.renderer, res.screen);
-	cleanup(res.prompt_tex, res.continue_tex);
+	cleanup(res.prompt_tex, res.continue_tex, res.start_tex, res.quit_tex, res.resume_tex, res.mainmenu_tex);
 	enemies.clear();
 	bullets.clear();
-	
-    TTF_Quit();
+
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -81,6 +104,9 @@ void Game::Run()
 			case 3:
 				InputNameMenu();
 				break;
+			case 4:
+				PauseMenu();
+				break;
 		}
 		
 		res.timeDeltaTimer.start();
@@ -97,20 +123,37 @@ void Game::StartMenu()
 	// Make sure nothing from the last frame is still drawn.
 	SDL_RenderClear(res.renderer);
 
-	SDL_Texture *start_tex = renderText("Start (G)ame", res.andy_fnt, res.white_clr, res.renderer);
-	SDL_Texture *quit_tex = renderText("(Q)uit Game", res.andy_fnt, res.white_clr, res.renderer);
+	int w, h;
+
+	SDL_QueryTexture(res.start_tex, NULL, NULL, &w, &h);
+	renderTexture(res.start_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 40);
+	
+	SDL_QueryTexture(res.quit_tex, NULL, NULL, &w, &h);
+	renderTexture(res.quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2);
+
+	SDL_RenderPresent(res.renderer);
+}
+
+
+void Game::PauseMenu()
+{
+	HandlePauseMenuInput();
+
+	// Make sure nothing from the last frame is still drawn.
+	SDL_RenderClear(res.renderer);
 
 	int w, h;
 
-	SDL_QueryTexture(start_tex, NULL, NULL, &w, &h);
-	renderTexture(start_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 40);
+	SDL_QueryTexture(res.resume_tex, NULL, NULL, &w, &h);
+	renderTexture(res.resume_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 50);
 
-	SDL_QueryTexture(quit_tex, NULL, NULL, &w, &h);
-	renderTexture(quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2);
+	SDL_QueryTexture(res.mainmenu_tex, NULL, NULL, &w, &h);
+	renderTexture(res.mainmenu_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2);
+
+	SDL_QueryTexture(res.quit_tex, NULL, NULL, &w, &h);
+	renderTexture(res.quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 + 50);
 
 	SDL_RenderPresent(res.renderer);
-
-	cleanup(start_tex, quit_tex);
 
 }
 
@@ -143,11 +186,12 @@ void Game::InputNameMenu()
 				{
 					res.text = SDL_GetClipboardText();
 				}
-				else if(res.event.key.keysym.sym == SDLK_RETURN)
+				else if(res.event.key.keysym.sym == SDLK_RETURN && res.text.length() > 0)
 				{
 					StateStack.pop();
 					StateStack.push(1); // Game
 					SDL_StopTextInput();
+					user.name = res.text;
 					res.text = "";
 					blinker.stop();
 				}
@@ -186,7 +230,6 @@ void Game::InputNameMenu()
 		blinker.start();
 	}
 	temp_tex = renderText(blink ? res.text + "_": res.text + "  ", res.andy_fnt, res.white_clr, res.renderer);
-	
 	SDL_QueryTexture(res.prompt_tex, NULL, NULL, &w, &h);
 	renderTexture(res.prompt_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 80);
 
@@ -219,6 +262,13 @@ void Game::Play()
 	for (auto enemy = begin (enemies); enemy != end (enemies);) {
 		enemy->update();
 		
+		for (auto bullet = begin (bullets); bullet != end (bullets); bullet++) {
+			if(collission(enemy->getBox(), bullet->getBox())){
+				std::cout<<"Hello"<<std::endl;
+				break;
+			}
+		
+		}
 		
 		if (enemy->getY() > WINDOW_HEIGHT + enemy->getWidth()){
 			enemy = enemies.erase(enemy);
@@ -226,6 +276,7 @@ void Game::Play()
 			++enemy;
 		}
 	}
+	
 	for (auto bullet = begin (bullets); bullet != end (bullets);) {
 		bullet->update();
 		
@@ -243,7 +294,6 @@ void Game::Play()
 	
 	for (auto & bullet : bullets) {
 		bullet.draw();
-		std::cout<<bullet.getY()<<std::endl;
 	}
 	
 	user.draw();
@@ -322,6 +372,59 @@ void Game::HandleStartMenuInput()
     }
 }
 
+
+void Game::HandlePauseMenuInput() 
+{
+	// Fill our event structure with event information. 
+	if ( SDL_PollEvent(&res.event) )
+	{
+		// Handle user manually closing game window 
+		if (res.event.type == SDL_QUIT)
+		{ 
+			// While state stack isn't empty, pop 
+			while (!StateStack.empty())
+			{
+				StateStack.pop();
+			}
+
+			return; // game is over, exit the function
+		}
+
+		// Handle keyboard input here 
+		if (res.event.type == SDL_KEYDOWN)
+		{
+			if (res.event.key.keysym.sym == SDLK_ESCAPE)
+			{
+				StateStack.pop();
+				return; // this state is done, exit the function 
+			}
+			// Quit 
+			if (res.event.key.keysym.sym == SDLK_q)
+			{
+				// While state stack isn't empty, pop 
+				while (!StateStack.empty())
+				{
+					StateStack.pop();
+				}
+				return; // game is over, exit the function 
+			}
+			// Start Game 
+			if (res.event.key.keysym.sym == SDLK_r)
+			{
+				StateStack.pop(); // Resume Game
+				return; 
+			}
+			// Start Game 
+			if (res.event.key.keysym.sym == SDLK_m)
+			{
+				StateStack.push(0); // Start Menu
+				Reset();
+				return; // this state is done, exit the function 
+			}
+		}
+	}
+}
+
 // This function receives player input and 
 // handles it for the main game state. 
 void Game::HandlePlayInput() 
@@ -346,7 +449,7 @@ void Game::HandlePlayInput()
         {
             if (res.event.key.keysym.sym == SDLK_ESCAPE)
             {
-                StateStack.pop();
+                StateStack.push(4);
 
                 return; // this state is done, exit the function 
             }

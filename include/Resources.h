@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <string.h>
+#include <map>
 
 // Game Tools
 #include "Timer.h"
@@ -23,13 +24,20 @@ struct Resources
 	TTF_Font *andy_fnt_min;
 	
 	// Colors
-	SDL_Color white_clr = { 255, 255, 255, 255 };
+	const SDL_Color white_clr = { 255, 255, 255, 255 };
+	const SDL_Color black_clr = { 0, 0, 0, 0 };
 	
 	// Texts
 	SDL_Texture *prompt_tex;
 	SDL_Texture *continue_tex;
+	SDL_Texture *start_tex;
+	SDL_Texture *quit_tex;
+	SDL_Texture *resume_tex;
+	SDL_Texture *mainmenu_tex;
 
 	std::string text;
+	
+	std::map<std::string, int> players;
 };
 
 #endif // RESOURCES_H

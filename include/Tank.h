@@ -28,6 +28,7 @@ public:
 	float getHeight();
 	double getAngle();
 	float getBarrelHead();
+	SDL_Rect getBox();
 	
 	void setX(const float);
 	void setY(const float);

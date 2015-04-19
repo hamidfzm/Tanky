@@ -84,6 +84,13 @@ double Bullet::getAngle()
 	return angle;
 }
 
+
+SDL_Rect Bullet::getBox()
+{
+	SDL_Rect box = { x - body[kind].w/2, y - body[kind].h/2, body[kind].w, body[kind].h};
+	return box;
+}
+
 void Bullet::update()
 {
 	if (direction & MOVE_UP){

@@ -9,6 +9,7 @@ Enemy::Enemy(Resources *res, const int type): res(res)
 	tank.setAngle(180);
 	tank.setY(0);
 	tank.setVY(3.2);
+	died = false;
 }
 
 float Enemy::getX()
@@ -29,6 +30,11 @@ float Enemy::getWidth()
 float Enemy::getHeight()
 {
 	return tank.getHeight();
+}
+
+SDL_Rect Enemy::getBox()
+{
+	return tank.getBox();
 }
 
 void Enemy::setX(const float x)

@@ -97,6 +97,12 @@ double Tank::getAngle()
 	return angle;
 }
 
+SDL_Rect Tank::getBox()
+{
+	SDL_Rect box = { x - body[kind].w/2, y - body[kind].h/2, body[kind].w, body[kind].h};
+	return box;
+}
+
 void Tank::fire()
 {
 	fireFrame = 0;
@@ -123,11 +129,11 @@ void Tank::draw()
 	renderTexture(res->sprites_txt, res->renderer, x - body[kind].w/2, y - body[kind].h/2, angle, &body[kind]);
 	renderTexture(res->sprites_txt, res->renderer, x - barrel[kind].w/2, y - barrel[kind].h + 5, angle, barrel[kind].w/2, barrel[kind].h - 5, &barrel[kind]);
 	
-	if (fireFrame < 7){
-		renderTexture(res->sprites_txt, res->renderer, x - smoke[kind].w/2 , y - 2 * body[kind].h, &smoke[fireFrame]);
-		if (fireFrameTimer.getTicks() > res->timeDelta / 4){
-			fireFrame++;
-			fireFrameTimer.start();
-		}
-	}
+//	if (fireFrame < 7){
+//		renderTexture(res->sprites_txt, res->renderer, x - smoke[kind].w/2 , y - 2 * body[kind].h, &smoke[fireFrame]);
+//		if (fireFrameTimer.getTicks() > res->timeDelta / 4){
+//			fireFrame++;
+//			fireFrameTimer.start();
+//		}
+//	}
 }

@@ -7,6 +7,7 @@
 
 #include "Defines.h"
 
+#include "Cleanup.h"
 #include "Timer.h"
 
 #include "Tank.h"
@@ -22,10 +23,12 @@ public:
 	bool isFired();
 	void update();
 	void draw();
+	void reset();
+	int flags;
+	std::string name;
 	
 private:
 	bool fired;
-	
 	Resources *res;
 	Tank tank;
 	Timer bulletTimer;
