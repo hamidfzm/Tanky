@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <map>
 
 // Constants
 #include "Defines.h"
@@ -45,13 +46,14 @@ private:
 	void StartMenu();
 	void PauseMenu();
 	void InputNameMenu();
-	void Scoresmenu();
+	void ScoresMenu();
 
 	void Play();
 	void Exit();
 
 	void HandleStartMenuInput();
 	void HandlePauseMenuInput();
+	void HandleScoresMenuInput();
 	void HandlePlayInput();
 	void HandleExitInput();
 
@@ -59,6 +61,7 @@ private:
 	void enemyGenerate();
 	void Reset();
 
+	std::map<std::string, int> players;
 };
 
 #endif // GAME_H

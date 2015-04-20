@@ -44,20 +44,24 @@ Game::Game()
 	res.continue_tex = renderText("Press (Enter) to continue...", res.andy_fnt_min, res.white_clr, res.renderer);
 	res.start_tex = renderText("Start (G)ame", res.andy_fnt, res.white_clr, res.renderer);
 	res.quit_tex = renderText("(Q)uit Game", res.andy_fnt, res.white_clr, res.renderer);
+	res.scores_tex = renderText("(S)cores", res.andy_fnt, res.white_clr, res.renderer);
 	res.resume_tex = renderText("(R)esume Game", res.andy_fnt, res.white_clr, res.renderer);
 	res.mainmenu_tex = renderText("(M)ain Menu", res.andy_fnt, res.white_clr, res.renderer);
 	
 	// load user stats
-	ifstream scores ("scores.txt");
+	std::ifstream scores ("scores.txt");
 	if (scores){
 		int players_count;
-		string player_name;
+		std::string player_name;
 		int player_score;
 		scores>>players_count;
 		
 		for(int i=0; i< players_count; i++){
-			
+			scores>>player_name>>player_score;
+			players[player_name] = player_score;
 		}
+		
+		scores.close();
 	}
 }
 
@@ -72,13 +76,30 @@ Game::~Game()
 {
 	// Clean up
 	cleanup(res.andy_fnt_min, res.andy_fnt, res.sprites_txt, res.renderer, res.screen);
-	cleanup(res.prompt_tex, res.continue_tex, res.start_tex, res.quit_tex, res.resume_tex, res.mainmenu_tex);
+	cleanup(res.prompt_tex, res.continue_tex, res.start_tex, res.quit_tex, res.resume_tex, res.mainmenu_tex,
+			res.scores_tex);
 	enemies.clear();
 	bullets.clear();
 
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+
+	// load user stats
+	std::ofstream scores ("scores.txt", std::fstream::out | std::fstream::trunc);
+	if (scores){
+		int players_count = players.size();
+		std::string player_name;
+		int player_score;
+		scores<<players_count<<std::endl;
+
+		for (auto player = begin (players); player != end (players); player++){
+			player_name = player->first;
+			player_score = player->second;
+			scores<<player_name<<std::endl<<player_score<<std::endl;
+		}
+		scores.close();
+	}
 }
 
 void Game::Run()
@@ -104,8 +125,13 @@ void Game::Run()
 			case 3:
 				InputNameMenu();
 				break;
+				
 			case 4:
 				PauseMenu();
+				break;
+				
+			case 5:
+				ScoresMenu();
 				break;
 		}
 		
@@ -126,11 +152,14 @@ void Game::StartMenu()
 	int w, h;
 
 	SDL_QueryTexture(res.start_tex, NULL, NULL, &w, &h);
-	renderTexture(res.start_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 40);
+	renderTexture(res.start_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 50);
 	
-	SDL_QueryTexture(res.quit_tex, NULL, NULL, &w, &h);
-	renderTexture(res.quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2);
+	SDL_QueryTexture(res.scores_tex, NULL, NULL, &w, &h);
+	renderTexture(res.scores_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2);
 
+	SDL_QueryTexture(res.quit_tex, NULL, NULL, &w, &h);
+	renderTexture(res.quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 + 50);
+	
 	SDL_RenderPresent(res.renderer);
 }
 
@@ -152,6 +181,36 @@ void Game::PauseMenu()
 
 	SDL_QueryTexture(res.quit_tex, NULL, NULL, &w, &h);
 	renderTexture(res.quit_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 + 50);
+
+	SDL_RenderPresent(res.renderer);
+
+}
+
+void Game::ScoresMenu()
+{
+	HandleScoresMenuInput();
+
+	// Make sure nothing from the last frame is still drawn.
+	SDL_RenderClear(res.renderer);
+
+	int w, i = 0, player_score;
+	std::string player_name;
+
+
+	for (auto player = begin (players); player != end (players); player++){
+		player_name = player->first;
+		player_score = player->second;
+		SDL_Texture *player_tex = renderText(player_name + " ----- " + std::to_string(player_score), 
+												res.andy_fnt_min, res.white_clr, res.renderer);
+		SDL_QueryTexture(player_tex, NULL, NULL, &w, NULL);
+		renderTexture(player_tex, res.renderer, (WINDOW_WIDTH - w) / 2, 30 + i * 25);
+		cleanup(player_tex);
+		
+		if (10 + i * 20 > WINDOW_HEIGHT){
+			break;
+		}
+		i++;
+	}
 
 	SDL_RenderPresent(res.renderer);
 
@@ -192,6 +251,7 @@ void Game::InputNameMenu()
 					StateStack.push(1); // Game
 					SDL_StopTextInput();
 					user.name = res.text;
+					players[user.name] = 0;
 					res.text = "";
 					blinker.stop();
 				}
@@ -264,7 +324,7 @@ void Game::Play()
 		
 		for (auto bullet = begin (bullets); bullet != end (bullets); bullet++) {
 			if(collission(enemy->getBox(), bullet->getBox())){
-				std::cout<<"Hello"<<std::endl;
+				// std::cout<<"Hello"<<std::endl;
 				break;
 			}
 		
@@ -366,6 +426,41 @@ void Game::HandleStartMenuInput()
             if (res.event.key.keysym.sym == SDLK_g)
             {
                 StateStack.push(3); // Name Input
+                return; // this state is done, exit the function 
+            }
+            // Scores 
+            if (res.event.key.keysym.sym == SDLK_s)
+            {
+                StateStack.push(5); // Scores
+                return; // this state is done, exit the function 
+            }
+        }
+    }
+}
+
+void Game::HandleScoresMenuInput() 
+{
+    // Fill our event structure with event information. 
+    if ( SDL_PollEvent(&res.event) )
+    {
+        // Handle user manually closing game window 
+        if (res.event.type == SDL_QUIT)
+        { 
+            // While state stack isn't empty, pop 
+            while (!StateStack.empty())
+            {
+                StateStack.pop();
+            }
+
+            return; // game is over, exit the function
+        }
+
+        // Handle keyboard input here 
+        if (res.event.type == SDL_KEYDOWN)
+        {
+            if (res.event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                StateStack.pop();
                 return; // this state is done, exit the function 
             }
         }
@@ -520,7 +615,6 @@ void Game::enemyGenerate()
 		if (type_step == 0)
 		{
 			type = random(1, 4);
-			std::cout<<type<<std::endl;
 			type_step = random(1, 8);
 		}
 		

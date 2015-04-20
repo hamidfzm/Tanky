@@ -205,8 +205,6 @@ inline bool collission(SDL_Rect box1, SDL_Rect box2)
 	int l1 = box1.x, l2 = box2.x;
 	int r1 = l1 + box1.w, r2 = l2 + box2.w;
 	
-	std::cout<<box1.x<<std::endl;
-	
 	// Check edges
 	if ((l1 > r2) || ( r1 < l2 ) || ( t1 > b2 ) || ( b1 < t2 ))
 	{

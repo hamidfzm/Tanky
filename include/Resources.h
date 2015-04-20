@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <string.h>
-#include <map>
 
 // Game Tools
 #include "Timer.h"
@@ -34,10 +33,10 @@ struct Resources
 	SDL_Texture *quit_tex;
 	SDL_Texture *resume_tex;
 	SDL_Texture *mainmenu_tex;
+	SDL_Texture *scores_tex;
 
 	std::string text;
-	
-	std::map<std::string, int> players;
+
 };
 
 #endif // RESOURCES_H
