@@ -25,9 +25,16 @@ public:
 	void draw();
 	void reset();
 	int flags;
+	signed long int score;
 	std::string name;
+	float fuel;
 	
 private:
+	SDL_Rect fuel_box;
+	SDL_Rect fuel_box_outline;
+	SDL_Color fuel_clr;
+	Timer fuelTimer;
+	
 	bool fired;
 	Resources *res;
 	Tank tank;

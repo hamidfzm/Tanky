@@ -21,6 +21,7 @@ struct Resources
 	SDL_Texture *sprites_txt;
 	TTF_Font *andy_fnt;
 	TTF_Font *andy_fnt_min;
+	TTF_Font *andy_fnt_max;
 	
 	// Colors
 	const SDL_Color white_clr = { 255, 255, 255, 255 };
@@ -34,6 +35,7 @@ struct Resources
 	SDL_Texture *resume_tex;
 	SDL_Texture *mainmenu_tex;
 	SDL_Texture *scores_tex;
+	SDL_Texture *failed_tex;
 
 	std::string text;
 

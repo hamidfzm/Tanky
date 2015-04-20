@@ -22,3 +22,6 @@
 #define MOVE_LEFT 8
 #define MOVE_RIGHT 16
 
+// Tank
+#define FUEL 1000.f
+

@@ -29,6 +29,7 @@ Game::Game()
 	const std::string resPath = getResourcePath();
 	
 	res.sprites_txt = loadTexture(resPath + "sheet_tanks.png", res.renderer);
+	res.andy_fnt_max = loadFont(resPath + "androidnation.ttf", 40);
 	res.andy_fnt = loadFont(resPath + "androidnation.ttf", 30);
 	res.andy_fnt_min = loadFont(resPath + "androidnation.ttf", 15);
 	
@@ -47,6 +48,7 @@ Game::Game()
 	res.scores_tex = renderText("(S)cores", res.andy_fnt, res.white_clr, res.renderer);
 	res.resume_tex = renderText("(R)esume Game", res.andy_fnt, res.white_clr, res.renderer);
 	res.mainmenu_tex = renderText("(M)ain Menu", res.andy_fnt, res.white_clr, res.renderer);
+	res.failed_tex = renderText("You Faild!!!", res.andy_fnt_max, res.white_clr, res.renderer);
 	
 	// load user stats
 	std::ifstream scores ("scores.txt");
@@ -67,6 +69,10 @@ Game::Game()
 
 void Game::Reset()
 {
+	if (user.name.length() > 0){
+		players[user.name] = user.score;
+	}
+	
 	user.reset();
 	enemies.clear();
 	bullets.clear();
@@ -74,12 +80,12 @@ void Game::Reset()
 
 Game::~Game()
 {
+	Reset();
+	
 	// Clean up
-	cleanup(res.andy_fnt_min, res.andy_fnt, res.sprites_txt, res.renderer, res.screen);
+	cleanup(res.andy_fnt_max, res.andy_fnt_min, res.andy_fnt, res.sprites_txt, res.renderer, res.screen);
 	cleanup(res.prompt_tex, res.continue_tex, res.start_tex, res.quit_tex, res.resume_tex, res.mainmenu_tex,
-			res.scores_tex);
-	enemies.clear();
-	bullets.clear();
+			res.scores_tex, res.failed_tex);
 
 	TTF_Quit();
 	IMG_Quit();
@@ -108,7 +114,7 @@ void Game::Run()
 	while (!StateStack.empty())
 	{
 		res.timeDelta = (BASE_TIME - res.timeDeltaTimer.getTicks());
-		
+
 		switch(StateStack.top()){
 			case 0:
 				StartMenu();
@@ -132,6 +138,10 @@ void Game::Run()
 				
 			case 5:
 				ScoresMenu();
+				break;
+			
+			case 6:
+				FailMenu();
 				break;
 		}
 		
@@ -195,8 +205,7 @@ void Game::ScoresMenu()
 
 	int w, i = 0, player_score;
 	std::string player_name;
-
-
+	
 	for (auto player = begin (players); player != end (players); player++){
 		player_name = player->first;
 		player_score = player->second;
@@ -305,6 +314,26 @@ void Game::InputNameMenu()
 }
 
 
+void Game::FailMenu()
+{
+	HandleFailMenuInput();
+
+	// Make sure nothing from the last frame is still drawn.
+	SDL_RenderClear(res.renderer);
+
+	int w, h;
+
+	SDL_QueryTexture(res.failed_tex, NULL, NULL, &w, &h);
+	renderTexture(res.failed_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 - 60);
+	
+	SDL_QueryTexture(res.mainmenu_tex, NULL, NULL, &w, &h);
+	renderTexture(res.mainmenu_tex, res.renderer, (WINDOW_WIDTH - w) / 2, (WINDOW_HEIGHT - h) / 2 + 60);
+	
+	SDL_RenderPresent(res.renderer);
+
+}
+
+
 // This function handles the main game. We'll control the
 // drawing of the game as well as any necessary game logic. 
 void Game::Play()
@@ -356,11 +385,12 @@ void Game::Play()
 		bullet.draw();
 	}
 	
-	user.draw();
+	
 	for (auto & enemy : enemies) {
 		enemy.draw();
 	}
 
+	user.draw();
 
 	SDL_RenderPresent(res.renderer);
 
@@ -514,6 +544,38 @@ void Game::HandlePauseMenuInput()
 			{
 				StateStack.push(0); // Start Menu
 				Reset();
+				return; // this state is done, exit the function 
+			}
+		}
+	}
+}
+
+
+void Game::HandleFailMenuInput() 
+{
+	// Fill our event structure with event information. 
+	if ( SDL_PollEvent(&res.event) )
+	{
+		// Handle user manually closing game window 
+		if (res.event.type == SDL_QUIT)
+		{ 
+			// While state stack isn't empty, pop 
+			while (!StateStack.empty())
+			{
+				StateStack.pop();
+			}
+
+			return; // game is over, exit the function
+		}
+
+		// Handle keyboard input here 
+		if (res.event.type == SDL_KEYDOWN)
+		{
+			if (res.event.key.keysym.sym == SDLK_ESCAPE || res.event.key.keysym.sym == SDLK_m)
+			{
+				StateStack.pop();
+				Reset();
+				StateStack.push(0); // Start Menu
 				return; // this state is done, exit the function 
 			}
 		}

@@ -47,6 +47,7 @@ private:
 	void PauseMenu();
 	void InputNameMenu();
 	void ScoresMenu();
+	void FailMenu();
 
 	void Play();
 	void Exit();
@@ -56,6 +57,7 @@ private:
 	void HandleScoresMenuInput();
 	void HandlePlayInput();
 	void HandleExitInput();
+	void HandleFailMenuInput();
 
 	Timer enemyGenerateTimer;
 	void enemyGenerate();
