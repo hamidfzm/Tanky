@@ -11,6 +11,16 @@ Bullet::Bullet()
 {
 }
 
+bool Bullet::isDestroyed()
+{
+	return destroyed;
+}
+
+void Bullet::Destroy()
+{
+	destroyed = true;
+}
+
 Bullet::Bullet(Resources *res, const int kind, const int direction, const int x, const int  y) :kind(kind), res(res), direction(direction), x(x), y(y)
 {
 	if (direction & MOVE_UP){
@@ -19,6 +29,7 @@ Bullet::Bullet(Resources *res, const int kind, const int direction, const int x,
 		angle = 180;
 	}
 	
+	destroyed = false;
 	setVX(1);
 	setVY(1);
 }
@@ -93,6 +104,10 @@ SDL_Rect Bullet::getBox()
 
 void Bullet::update()
 {
+	if (y > WINDOW_HEIGHT + getWidth() || y < -getWidth()){
+		Destroy();
+	}
+
 	if (direction & MOVE_UP){
 		y -= (vy / BASE_TIME) * (res->timeDelta);
 	} else if (direction & MOVE_DOWN){

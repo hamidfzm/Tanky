@@ -21,6 +21,7 @@ public:
 	float getY();
 	float getBarrelHead();
 	bool isFired();
+	bool isFaild();
 	void update();
 	void draw();
 	void reset();
@@ -36,6 +37,7 @@ private:
 	Timer fuelTimer;
 	
 	bool fired;
+	bool faild;
 	Resources *res;
 	Tank tank;
 	Timer bulletTimer;

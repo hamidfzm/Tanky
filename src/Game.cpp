@@ -69,7 +69,7 @@ Game::Game()
 
 void Game::Reset()
 {
-	if (user.name.length() > 0){
+	if (user.name.length() > 0 && user.score > players[user.name]){
 		players[user.name] = user.score;
 	}
 	
@@ -348,18 +348,33 @@ void Game::Play()
 		bullets.push_back(Bullet(&res, 0, MOVE_UP, user.getX(), user.getBarrelHead()));
 	}
 	
+	if(user.isFaild()){
+		if (user.name.length() > 0 && user.score > players[user.name]){
+			players[user.name] = user.score;
+		}
+		
+		StateStack.pop();
+		StateStack.push(6);
+	}
+	
 	for (auto enemy = begin (enemies); enemy != end (enemies);) {
 		enemy->update();
 		
 		for (auto bullet = begin (bullets); bullet != end (bullets); bullet++) {
 			if(collission(enemy->getBox(), bullet->getBox())){
-				// std::cout<<"Hello"<<std::endl;
+				enemy->Die();
+				bullet->Destroy();
 				break;
 			}
 		
 		}
 		
-		if (enemy->getY() > WINDOW_HEIGHT + enemy->getWidth()){
+		if (enemy->isDestroyed()){
+			if (enemy->isDied()){
+				user.score += enemy->getPower();
+			} else if (user.flags > 0){
+				user.flags--;
+			}
 			enemy = enemies.erase(enemy);
 		} else {
 			++enemy;
@@ -369,7 +384,7 @@ void Game::Play()
 	for (auto bullet = begin (bullets); bullet != end (bullets);) {
 		bullet->update();
 		
-		if (bullet->getY() > WINDOW_HEIGHT + bullet->getWidth() || bullet->getY() < -bullet->getWidth()){
+		if (bullet->isDestroyed()){
 			bullet = bullets.erase(bullet);
 		} else {
 			++bullet;

@@ -36,6 +36,9 @@ public:
 	void setAngle(const double);
 	void update();
 	void draw();
+	
+	bool isDestroyed();
+	void Destroy();
 
 private:
 	Resources *res;
@@ -44,6 +47,7 @@ private:
 	int direction;
 	float x, y, vx, vy;
 	double angle;
+	bool destroyed;
 };
 
 #endif // BULLET_H

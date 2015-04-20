@@ -31,6 +31,7 @@ void User::reset()
 	name = "";
 	score = 0;
 	fuel = 1000;
+	faild = false;
 	fuel_clr.r = 110;
 	fuel_clr.g = 255;
 	fuel_clr.b = 0;
@@ -87,12 +88,21 @@ void User::update()
 		fuel = 0;
 	}
 	
+	if (flags <= 0 || fuel <= 0){
+		faild = true;
+	}
+	
 	
 }
 
 bool User::isFired()
 {
 	return fired;
+}
+
+bool User::isFaild()
+{
+	return faild;
 }
 
 void User::draw()
